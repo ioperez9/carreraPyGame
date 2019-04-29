@@ -6,7 +6,7 @@ import sys
 class Runner():
     __customes = ("turtle", "fish", "prawn", "moray", "octopus")
     
-    def __init__(self, x=0, y=0, custome= "turle"):
+    def __init__(self, x=0, y=0, custome= "turtle"):
         
         self.custome = pygame.image.load("images/{}.png".format(custome))
         self.position = [x, y]
@@ -19,7 +19,7 @@ class Runner():
 class Game():
     
     runners = []
-    __posY = (160, 200, 240, 280)
+    __posY = (50, 150, 250, 350)
     __names = ('Speedy', 'Lucera', 'Alonso', 'Torcuata')
     __startLine = -5
     __finishLine = 620
@@ -38,6 +38,11 @@ class Game():
         #primera version hemos probado con una pelota:
         #self.runner = pygame.image.load("images/smallball.png")
     
+    def close(self):
+        pygame.quit()
+        sys.exit()
+    
+    
     def competir(self): #esta es la parte dónde lo ejecuto
         gameOver = False
         while not gameOver:
@@ -46,27 +51,32 @@ class Game():
                 if event.type == pygame.QUIT:
                     gameOver = True
                   #hasta aquí es para comprobar los eventos
-            
-            self.runners[0].avanzar()  #comando para que tortuga avance
-            
-            if self.runners[0].position[0] >= self.__finishLine:
-                print("{} ha ganado".format(self.runners[0].name))
-                gameOver = True
+                    
+            for activeRunner in self.runners:
+                activeRunner.avanzar()  #comando para que tortuga avance
+                if activeRunner.position[0] >= self.__finishLine:
+                    print("{} ha ganado".format(activeRunner.name))
+                    gameOver = True
                     
             #ahora vamos a ver como hacemos el renderizado de la pantalla:
             self.__screen.blit(self.__background, (0, 0)) #blit es un nombre en pygame para Pintar, pintar la pantalla muy rápido
             
-            for runner in self.__runners:
-                self.__screen.blit(runner.custome, runner[0].position)
+            
+            for runner in self.runners:
+                self.__screen.blit(runner.custome, runner.position)
             
             pygame.display.flip()
         #comando de pygame que es REFRESCA RENDERIZAR LA PANATALLA
         #estas dos instrucciones son para que al darle a la x de la ventana salgas del juego y cierre
-        pygame.quit()
-        sys.exit()
-            
-            
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.close()
+                
+              
+        
+                  
 if __name__ == "__main__":
-    pygame.init()
     game = Game()
+    pygame.init()
     game.competir()
