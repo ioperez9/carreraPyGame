@@ -4,11 +4,13 @@ import sys
 #importamos sys para que funcione quit por si no va con el de pygame
 
 class Runner():
+    __customes = ("turtle", "fish", "prawn", "moray", "octopus")
     
-    def __init__(self, x=0, y=0):
-        self.custome = pygame.image.load("images/turtle.png")
+    def __init__(self, x=0, y=0, custome= "turle"):
+        
+        self.custome = pygame.image.load("images/{}.png".format(custome))
         self.position = [x, y]
-        self.name = "Tortuga"
+        self.name = custome
         
     def avanzar(self):
         self.position[0] += random.randint(1, 6)
@@ -17,7 +19,9 @@ class Runner():
 class Game():
     
     runners = []
-    __startLine = 5
+    __posY = (160, 200, 240, 280)
+    __names = ('Speedy', 'Lucera', 'Alonso', 'Torcuata')
+    __startLine = -5
     __finishLine = 620
     
     def __init__(self): #esta es la parte de construccion , pantalla , del nombre y de lo que tendrá el fondo
@@ -25,9 +29,10 @@ class Game():
         self.__background = pygame.image.load("images/background.png")
         pygame.display.set_caption("Carrera de bichos")
         
-        firstRunner = Runner(self.__startLine, 240)
-        firstRunner.name = "Speedy"
-        self.runners.append(firstRunner)
+        for i in range (4):
+            theRunner = Runner(self.__startLine, self.__posY[i])
+            theRunner.name = self.__names[i]
+            self.runners.append(theRunner)
         
         #runners.append(Runner(self.__startLine, 240))   
         #primera version hemos probado con una pelota:
@@ -50,7 +55,9 @@ class Game():
                     
             #ahora vamos a ver como hacemos el renderizado de la pantalla:
             self.__screen.blit(self.__background, (0, 0)) #blit es un nombre en pygame para Pintar, pintar la pantalla muy rápido
-            self.__screen.blit(self.runners[0].custome, self.runners[0].position)
+            
+            for runner in self.__runners:
+                self.__screen.blit(runner.custome, runner[0].position)
             
             pygame.display.flip()
         #comando de pygame que es REFRESCA RENDERIZAR LA PANATALLA
