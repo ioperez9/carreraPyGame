@@ -6,11 +6,12 @@ import sys
 class Runner():
     __customes = ("turtle", "fish", "prawn", "moray", "octopus")
     
-    def __init__(self, x=0, y=0, custome= "turtle"):
+    def __init__(self, x=0, y=0):
+        ixCustome = random.randint(0, 4)
         
-        self.custome = pygame.image.load("images/{}.png".format(custome))
+        self.custome = pygame.image.load("images/{}.png".format(self.__customes[ixCustome]))
         self.position = [x, y]
-        self.name = custome
+        self.name = " "
         
     def avanzar(self):
         self.position[0] += random.randint(1, 6)
